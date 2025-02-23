@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from stackusers import views as user_view
+from django.contrib.auth import views as auth_view
 
 
 urlpatterns = [
@@ -24,5 +25,7 @@ urlpatterns = [
     path('', include('stackbase.urls')),
 
     # Authentication System
-    path('register/', user_view.register, name="register")
+    path('register/', user_view.register, name="register"),
+    path('login/', auth_view.LoginView.as_view(template_name="stackusers/login.html"), name="login"),
+    path('logout/', auth_view.LogoutView.as_view(template_name="stackusers/logout.html"), name="logout"),
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 
 def not_logged_in(user):
@@ -18,5 +18,9 @@ def register(request):
             return redirect('login')
     else:
         form = UserRegisterForm()
-
+ 
     return render(request, 'stackusers/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    return render(request, 'stackusers/profile.html')

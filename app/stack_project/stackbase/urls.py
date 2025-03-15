@@ -8,5 +8,6 @@ urlpatterns = [
     path('about/', views.about, name="about"),
 
     # CRUD function
-    path('questions/', views.QuestionListView.as_view(), name="question-list")
+    path('questions/', views.QuestionListView.as_view(), name="question-list"),
+    path('questions/<int:pk>/', views.QuestionDetailView.as_view(), name="question-detail")
     ]

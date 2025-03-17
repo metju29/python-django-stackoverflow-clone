@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .models import Question
 
 
@@ -20,7 +20,7 @@ class QuestionListView(ListView):
 class QuestionDetailView(DetailView):
     model = Question
 
-class QuestionCreateView(CreateView):
+class QuestionCreateView(LoginRequiredMixin, CreateView):
     model = Question
     fields = ['title', 'content']
 
@@ -28,14 +28,14 @@ class QuestionCreateView(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class QuestionUpdateView(UserPassesTestMixin, UpdateView):
+class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Question
     fields = ['title', 'content']
 
     def test_func(self):
         return self.get_object().user == self.request.user
 
-class QuestionDeleteView(UserPassesTestMixin, DeleteView):
+class QuestionDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Question
     context_object_name = 'question'
     success_url = reverse_lazy('stackbase:question-list')

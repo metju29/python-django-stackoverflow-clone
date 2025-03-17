@@ -180,7 +180,11 @@
                                                 {% csrf_token %}
                                                 {{form|crispy}}
                                                 <button class="btn btn-success" id="logout-btn" type="submit">Post Question</button>
-                                                <a style="text-decoration: none; " class="btn btn-outline-secondary" href="">Cancel</a>
+                                                {% if question.id %}
+                                                <a style="text-decoration: none; " class="btn btn-outline-secondary" href="{% url 'stackbase:question-detail' question.id %}">Cancel</a>
+                                                {% else %}
+                                                <a style="text-decoration: none; " class="btn btn-outline-secondary" href="{% url 'stackbase:question-list' %}">Cancel</a>
+                                                {% endif %}
                                                 <!-- <button class="btn btn-secondary" id="logout-btn" type="submit"><a id="fa" href="" style="color: white; text-decoration: none;">Go back</a></button> -->
                                         </form>
                                         <div style="margin-top: 10px;">

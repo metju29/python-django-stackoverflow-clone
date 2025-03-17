@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import UserPassesTestMixin
 from .models import Question
 
 
@@ -30,6 +31,14 @@ class QuestionCreateView(CreateView):
 class QuestionUpdateView(UserPassesTestMixin, UpdateView):
     model = Question
     fields = ['title', 'content']
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+class QuestionDeleteView(UserPassesTestMixin, DeleteView):
+    model = Question
+    context_object_name = 'question'
+    success_url = reverse_lazy('stackbase:question-list')
 
     def test_func(self):
         return self.get_object().user == self.request.user

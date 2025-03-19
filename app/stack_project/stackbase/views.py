@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from .models import Question
+from .models import Question, Comment
+from .forms import CommentForm
+
 
 
 def home(request):
@@ -42,3 +44,27 @@ class QuestionDeleteView(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().user == self.request.user
+
+class CommentDetailView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'stackbase/question_detail.html'
+
+    def form_valid(self, form):
+        form.instance.question_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+    success_url = reverse_lazy('stackbase:question-detail')
+
+class AddCommentView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'stackbase/question_answer.html'
+
+    def form_valid(self, form):
+        form.instance.question_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('stackbase:question-detail', kwargs={'pk': self.kwargs['pk']})
+

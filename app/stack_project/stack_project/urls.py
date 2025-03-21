@@ -33,7 +33,10 @@ urlpatterns = [
 
     # Profile system
     path('profile/', user_view.profile, name="profile"),
-    path('profile/update/', user_view.profile_update, name="profile_update")
+    path('profile/update/', user_view.profile_update, name="profile_update"),
+
+    #CKEditor
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
 ]
 
 if settings.DEBUG:

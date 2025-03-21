@@ -177,8 +177,12 @@
                                     <div class="card-block">
                                         </div>
                                         <form action="" method="POST" enctype="multipart/form-data">
-                                                {% csrf_token %}
-                                                {{form|crispy}}
+                                            {% csrf_token %}
+                                            {{ form.title.label }}
+                                            {{ form.title }}
+                                            {{ form.content.label }}
+                                            {{ form.content|safe }}
+                                            {{ form.media }}
                                                 <button class="btn btn-success" id="logout-btn" type="submit">Post Question</button>
                                                 {% if question.id %}
                                                 <a style="text-decoration: none; " class="btn btn-outline-secondary" href="{% url 'stackbase:question-detail' question.id %}">Cancel</a>

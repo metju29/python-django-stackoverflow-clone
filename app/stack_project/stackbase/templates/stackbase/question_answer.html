@@ -178,7 +178,10 @@
                                         
                                         <form action="" method="POST">
                                             {% csrf_token %}
-                                            {{form|crispy}}
+                                            {{ form.name.label }}
+                                            {{ form.name }}
+                                            {{ form.content.label }}
+                                            {{ form.content|safe }}
                                             {{ form.media }}
                                             <button class="btn btn-success" id="logout-btn" type="submit">Post Answer</button>
                                             <a style="text-decoration: none; " class="btn btn-outline-secondary" href="">Cancel</a>

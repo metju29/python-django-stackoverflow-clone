@@ -2,12 +2,13 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=10000)
-    content = models.TextField(null=True, blank=True)
+    content = CKEditor5Field("Content", config_name="default")
     likes = models.ManyToManyField(User, related_name='question_post')
     date_created = models.DateTimeField(default=timezone.now)
 
@@ -23,7 +24,7 @@ class Question(models.Model):
 class Comment(models.Model):
     question = models.ForeignKey(Question, related_name="comment", on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
-    content = models.TextField(null=True, blank=True)
+    content = CKEditor5Field("Content", config_name="default")
     date_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

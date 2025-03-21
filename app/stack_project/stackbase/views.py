@@ -6,8 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .models import Question, Comment
-from .forms import CommentForm
-
+from .forms import CommentForm, QuestionForm
 
 
 def home(request):
@@ -35,6 +34,7 @@ class QuestionListView(ListView):
 
 class QuestionDetailView(DetailView):
     model = Question
+    form_class = QuestionForm
 
     def get_context_data(self, *args, **kwargs):
         context = super(QuestionDetailView, self).get_context_data()
@@ -50,7 +50,7 @@ class QuestionDetailView(DetailView):
 
 class QuestionCreateView(LoginRequiredMixin, CreateView):
     model = Question
-    fields = ['title', 'content']
+    form_class = QuestionForm
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -58,7 +58,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
 class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Question
-    fields = ['title', 'content']
+    form_class = QuestionForm
 
     def test_func(self):
         return self.get_object().user == self.request.user

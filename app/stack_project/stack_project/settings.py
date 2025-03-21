@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'stackusers',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django_ckeditor_5',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +109,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': [
+            'bold', 'italic', 'underline', 'strikethrough', 'link',
+            'bulletedList', 'numberedList', 'outdent', 'indent', 'blockQuote',
+            'imageUpload', 'insertTable', 'mediaEmbed'
+        ],
+    },
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -140,3 +153,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'stackbase:home'
 
 LOGIN_URL = 'login'
+

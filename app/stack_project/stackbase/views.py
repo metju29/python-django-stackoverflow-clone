@@ -2,6 +2,7 @@ from asyncio import QueueEmpty
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.template.defaultfilters import title
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -31,6 +32,14 @@ class QuestionListView(ListView):
     model = Question
     context_object_name = 'questions'
     ordering = ['-date_created']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        search_input = self.request.GET.get('search-area') or ""
+        if search_input:
+            context['questions'] = context['questions'].filter(title__icontains = search_input)
+            context['search_input'] = search_input
+        return context
 
 class QuestionDetailView(DetailView):
     model = Question
